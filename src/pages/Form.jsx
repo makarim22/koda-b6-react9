@@ -1,7 +1,7 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
-import { saveFormData } from "../redux/slice/formSlice";
+import { addFormData} from "../redux/slice/formSlice";
 import { useNavigate } from "react-router-dom";
 
 function Form() {
@@ -21,7 +21,7 @@ function Form() {
   
   const onSubmit = (data) => {
     console.log("data nya adalah", data);
-    dispatch(saveFormData(data));
+    dispatch(addFormData(data));
     navigate('/result');
     alert("Data berhasil disimpan");
   };

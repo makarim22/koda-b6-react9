@@ -1,27 +1,50 @@
-import React from 'react'
-import { useSelector } from 'react-redux'
+import { useSelector} from 'react-redux'
+
+
 function SurveyResult() {
+  const formDataList = useSelector((state) => state.form.formArray);
 
-  const formData = useSelector((state) => state.form.formData);
-
-  if (!formData) {
+  if (formDataList.length === 0) {
     return <div>Belum ada data formulir yang disubmit.</div>;
   }
 
-  console.log("data nya adalah", formData);
   return (
-    <div>
-      <h2>Ringkasan Data Formulir</h2>
-      <p>Nama: {formData.name}</p>
-      <p>Umur: {formData.age}</p>
-      <p>Jenis Kelamin: {formData.gender}</p>
-      <p>Perokok: {formData.isSmoking === 'yes' ? 'Ya' : 'Tidak'}</p>
-      {formData.isSmoking === 'yes' && formData.cigarettes.length > 0 && (
-        <p>Rokok yang pernah dicoba: {formData.cigarettes.join(', ')}</p>
-      )}
-       {formData.isSmoking === 'yes' && formData.cigarettes.length === 0 && (
-        <p>Rokok yang pernah dicoba: Tidak ada yang dipilih</p>
-      )}
+    <div style={{ padding: '20px' }}>
+      <h2>Daftar Semua Data Formulir ({formDataList.length})</h2>
+      
+      <div style={{ overflowX: 'auto' }}>
+        <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+          <thead>
+            <tr style={{ backgroundColor: '#f0f0f0', borderBottom: '2px solid #ddd' }}>
+              <th style={{ padding: '10px', textAlign: 'left', border: '1px solid #ddd' }}>No</th>
+              <th style={{ padding: '10px', textAlign: 'left', border: '1px solid #ddd' }}>Nama</th>
+              <th style={{ padding: '10px', textAlign: 'left', border: '1px solid #ddd' }}>Umur</th>
+              <th style={{ padding: '10px', textAlign: 'left', border: '1px solid #ddd' }}>Jenis Kelamin</th>
+              <th style={{ padding: '10px', textAlign: 'left', border: '1px solid #ddd' }}>Perokok</th>
+              <th style={{ padding: '10px', textAlign: 'left', border: '1px solid #ddd' }}>Rokok yang Dicoba</th>
+            </tr>
+          </thead>
+          <tbody>
+            {formDataList.map((data, index) => (
+              <tr key={index} style={{ borderBottom: '1px solid #ddd' }}>
+                <td style={{ padding: '10px', border: '1px solid #ddd' }}>{index + 1}</td>
+                <td style={{ padding: '10px', border: '1px solid #ddd' }}>{data.name}</td>
+                <td style={{ padding: '10px', border: '1px solid #ddd' }}>{data.age}</td>
+                <td style={{ padding: '10px', border: '1px solid #ddd' }}>{data.gender === 'male' ? 'Laki-laki' : 'Perempuan'}</td>
+                <td style={{ padding: '10px', border: '1px solid #ddd' }}>{data.isSmoking === 'yes' ? 'Ya' : 'Tidak'}</td>
+                <td style={{ padding: '10px', border: '1px solid #ddd' }}>
+                  {data.isSmoking === 'yes' && data.cigarettes.length > 0
+                    ? data.cigarettes.join(', ')
+                    : data.isSmoking === 'yes'
+                    ? 'Tidak ada yang dipilih'
+                    : '-'}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
     </div>
   )
 }
